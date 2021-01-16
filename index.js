@@ -106,7 +106,65 @@ function viewByDepartment(){
 };
 
 function addEmployee(){
-    inquirer.prompt
+    inquirer.prompt([
+        {
+            type: 'input', 
+            message: 'What is your employees first name?',
+            name: "firstname"
+        },
+        {
+            type: 'input',
+            message: 'What is your employees last name?',
+            name: "lastname"
+        },
+        {
+            type: "list",
+            message: "Choose your employees role",
+            name: "role",
+            choices: [
+                {
+                    name: "Sales Lead",
+                    value: 1
+                },
+                {
+                    name: "Salesperson",
+                    value: 2
+                },
+                {
+                    name: "Lead Engineer",
+                    value: 3
+                },
+                {
+                    name: "Software Engineer",
+                    value: 4
+                },
+                {
+                    name: "Accountant",
+                    value: 5
+                },
+                {
+                    name: "Legal Team Lead",
+                    value: 6
+                },
+                {
+                    name: "Lawyer",
+                    value: 7
+                },
+            ]
+        },        
+    ]).then(function(response){
+        connection.query("INSERT INTO employee SET ?", 
+        {
+            first_name: response.firstname,
+            last_name: response.lastname,
+            role_id: response.role
+        },
+        function (err){
+            if (err) throw err;
+            console.log("Employee Created Succesfully");
+            promptUser();
+        });
+    });
 }
 
 
