@@ -1,8 +1,9 @@
+//Dependencies packages
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const cTable = require("console.table");
 const CFonts = require("cfonts");
-
+//Local Connection to MySQL for database
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -10,7 +11,7 @@ var connection = mysql.createConnection({
     password: "",
     database: "employee_trackerdb"
 })
-
+//When connected use cfonts as a header and then go to the main function to prompt users
 connection.connect(function(err){
     if (err) throw err;
     CFonts.say('Employee|Manager', {
@@ -29,7 +30,7 @@ connection.connect(function(err){
     });    
     promptUser();
 });
-
+//Main Menu of Employee Manager, asks questions then divert to appropriate function
 function promptUser() {
     inquirer.prompt([
       {
@@ -83,6 +84,7 @@ function promptUser() {
     });
 }
 
+//function to view all employees, departments, and roles
 function viewAll() {
     let query = "SELECT employee.first_name, employee.last_name, role.title, departments.department, role.salary, employee.manager_id";
     query += " FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN departments ON (role.department_id = departments.id)";
@@ -93,7 +95,7 @@ function viewAll() {
         promptUser();
     })
 };
-
+//function to view all employees by department
 function viewByDepartment(){
     let query = "SELECT departments.department, employee.first_name, employee.last_name";
     query += " FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN departments ON (role.department_id = departments.id)";
@@ -104,7 +106,7 @@ function viewByDepartment(){
         promptUser();
     })
 };
-
+//function to add employees to DB and be reflected in all employees
 function addEmployee(){
     inquirer.prompt([
         {
@@ -153,21 +155,62 @@ function addEmployee(){
             ]
         },        
     ]).then(function(response){
+        console.log("Adding New Employee...\n");
         connection.query("INSERT INTO employee SET ?", 
         {
             first_name: response.firstname,
             last_name: response.lastname,
             role_id: response.role
         },
-        function (err){
+        function (err, res){
             if (err) throw err;
-            console.log("Employee Created Succesfully");
+            console.log(res.affectedRows + " Employee Created Succesfully\n");
             promptUser();
         });
     });
 }
 
+function removeEmployee() {
+    let employeeArr = [];
+    let query = "SELECT employee.first_name, employee.last_name, departments.department";
+    query += " FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN departments ON (role.department_id = departments.id)";
+    query += " ORDER BY employee.last_name"
+    connection.query(query, function (err, res){
+        if (err) throw err;
+        //console.log(res);
+        //change later to map
+        //+ " " + res[i].last_name + " " + res[i].department
+        for (i = 0; i < res.length; i++){
+            employeeArr.push(res[i].first_name);             
+        }
+        //console.log(employeeArr);
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Which employee do you want to remove?",
+                choices: employeeArr,
+                name: "first_name"
+            }
+        ]).then(function(response){
+            //console.log(response);
+            //var test = JSON.stringify(response);
+            //console.log(test);
+            //console.log(response[0]);
+           // response.shift();
+            console.log(response);            
+            var query = "DELETE FROM employee WHERE (?)";
+            console.log(query);
+            connection.query(query, response, function (err, res){
+                if (err) throw err;
+                console.log("Yup that works")
+                promptUser();
+            })
+        })
+    })
+}
 
+
+//function to end program
 function missionComplete() {
     CFonts.say('Goodbye!', {
         font: 'block',              
