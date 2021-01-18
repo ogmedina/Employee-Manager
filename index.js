@@ -95,6 +95,7 @@ function viewAll() {
         promptUser();
     })
 };
+
 //function to view all employees by department
 function viewByDepartment(){
     let query = "SELECT departments.department, employee.first_name, employee.last_name";
@@ -106,6 +107,7 @@ function viewByDepartment(){
         promptUser();
     })
 };
+
 //function to add employees to DB and be reflected in all employees
 function addEmployee(){
     inquirer.prompt([
@@ -168,8 +170,9 @@ function addEmployee(){
             promptUser();
         });
     });
-}
+};
 
+//function to remove employees from DB
 function removeEmployee() {
     let employeeArr = [];
     let query = "SELECT employee.first_name, employee.last_name, departments.department";
@@ -180,8 +183,9 @@ function removeEmployee() {
         //console.log(res);
         //change later to map
         //+ " " + res[i].last_name + " " + res[i].department
+        console.table(res);
         for (i = 0; i < res.length; i++){
-            employeeArr.push(res[i].first_name);             
+            employeeArr.push(res[i].last_name);             
         }
         //console.log(employeeArr);
         inquirer.prompt([
@@ -189,7 +193,7 @@ function removeEmployee() {
                 type: "list",
                 message: "Which employee do you want to remove?",
                 choices: employeeArr,
-                name: "first_name"
+                name: "last_name"
             }
         ]).then(function(response){
             //console.log(response);
@@ -207,8 +211,81 @@ function removeEmployee() {
             })
         })
     })
-}
+};
 
+//function to update Role of employee
+function updateEmployeeRole(){
+    let updateEmployeeRole = [];
+    let query = "SELECT employee.first_name, employee.last_name, role.title, departments.department";
+    query += " FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN departments ON (role.department_id = departments.id)"
+    query += " ORDER BY employee.last_name"
+    connection.query(query, function (err, res){
+        if (err) throw err;
+        console.table(res);
+        for (i = 0; i < res.length; i++){
+            updateEmployeeRole.push(res[i].last_name);
+        }
+        inquirer.prompt([
+            {
+                type: "list",
+                message: "Which employee do you want to update his/her role?",
+                choices: updateEmployeeRole,
+                name: "last_name"
+            },
+            {
+                type: "list",
+                message: "Choose the new role for the employee",
+                name: "role_id",
+                choices: [
+                    {
+                        name: "Sales Lead",
+                        value: 1
+                    },
+                    {
+                        name: "Salesperson",
+                        value: 2
+                    },
+                    {
+                        name: "Lead Engineer",
+                        value: 3
+                    },
+                    {
+                        name: "Software Engineer",
+                        value: 4
+                    },
+                    {
+                        name: "Accountant",
+                        value: 5
+                    },
+                    {
+                        name: "Legal Team Lead",
+                        value: 6
+                    },
+                    {
+                        name: "Lawyer",
+                        value: 7
+                    },
+                ]
+            }
+        ]).then(function(response){
+            console.log(response);
+            console.log("Updating Role for Employee...\n");
+            var query = "UPDATE employee SET ? WHERE ?";
+            connection.query(query,[
+                {
+                    role_id: response.role_id
+                },
+                {
+                    last_name: response.last_name
+                }
+            ],function (err, res){
+                if (err) throw err;
+                console.log("Role Successfully Changed!!\n")
+                promptUser();
+            })            
+        })
+    })
+};
 
 //function to end program
 function missionComplete() {
@@ -227,4 +304,4 @@ function missionComplete() {
         env: 'node'     
         });
     connection.end();    
-}
+};
