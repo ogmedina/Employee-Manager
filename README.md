@@ -28,8 +28,8 @@ node index.js
 ### Screenshots
 VIDEO WALKTHROUGH (Coming Soon!)
 
-![mainpage1](./Images/mainpage1.JPG)
-![mainpage2](./Images/mainpage2.GIF)
+![mainpage1](https://github.com/ogmedina/Homework-Employee-Tracker/blob/main/Images/mainpage1.jpg)
+![mainpage2](https://github.com/ogmedina/Homework-Employee-Tracker/blob/main/Images/mainpage2.gif)
 
 ### License
 This project is licensed under the MIT License.
