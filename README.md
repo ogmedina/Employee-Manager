@@ -15,16 +15,21 @@ This is the twelfth assignment for the UTSA Full-Stack Bootcamp. It is a command
 * [Questions](#questions)
 
 ### Installation
+Please begin by uploading the seed data into your MySQL LocalHost and setting up your port number, user name, and password into the index.js file.
+
 To install necessary dependencies, run the following command:
 ```
 npm i
 ```
 The program can then be run using the following command line in the bash terminal or integrated terminal:
 ```
-node employeetracker.js
+node index.js
 ```
 ### Screenshots
-(Coming Soon!)
+VIDEO WALKTHROUGH (Coming Soon!)
+
+![mainpage1](./Images/mainpage1.JPG)
+![mainpage2](./Images/mainpage2.GIF)
 
 ### License
 This project is licensed under the MIT License.

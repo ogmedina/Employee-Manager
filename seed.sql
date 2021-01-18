@@ -92,18 +92,3 @@ VALUES ("Tom", "Allen", 7, 6);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Christian", "Eckenrode", 3, 2);
-
---Query for viewing All employees
-SELECT employee.first_name, employee.last_name, role.title, departments.department, role.salary, employee.manager_id
-FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN departments ON (role.department_id = departments.id)
-ORDER BY employee.last_name;
-
---Query for Viewing all employees by department
-SELECT departments.department, employee.first_name, employee.last_name
-FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN departments ON (role.department_id = departments.id)
-ORDER BY departments.department;
-
---Query for viewing employees for deletion
-SELECT employee.first_name, employee.last_name, departments.department
-FROM employee INNER JOIN role on (employee.role_id = role.id) INNER JOIN departments ON (role.department_id = departments.id)
-ORDER BY employee.last_name;
