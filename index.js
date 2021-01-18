@@ -38,12 +38,12 @@ function promptUser() {
         message: "What would you like to do?",
         choices: [
             "View All Employees",
-            "View All Employees By Department",
-            "View All Employees By Manager",
+            "View All Departments",
+            "Add Role",
             "Add Employee",
+            "Add Department",
             "Remove Employee",
-            "Update Employee Role",
-            "Update Employee Manager",
+            "Update Employee Role",            
             "Done!"
         ],
         name: "userchoice"
@@ -53,16 +53,20 @@ function promptUser() {
             viewAll();
             break;
 
-            case "View All Employees By Department":
+            case "View All Departments":
             viewByDepartment();
             break;
 
-            case "View All Employees By Manager":
-            viewByManager();
+            case "Add Role":
+            addRole();
             break;
 
             case "Add Employee":
             addEmployee();
+            break;
+
+            case "Add Department":
+            addDepartment();
             break;
 
             case "Remove Employee":
@@ -71,10 +75,6 @@ function promptUser() {
 
             case "Update Employee Role":
             updateEmployeeRole();
-            break;
-
-            case "Update Employee Manager":
-            updateEmployeeManager();
             break;
 
             case "Done!":
@@ -86,7 +86,7 @@ function promptUser() {
 
 //function to view all employees, departments, and roles
 function viewAll() {
-    let query = "SELECT employee.first_name, employee.last_name, role.title, departments.department, role.salary, employee.manager_id";
+    let query = "SELECT employee.first_name, employee.last_name, role.title, departments.department, role.salary";
     query += " FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN departments ON (role.department_id = departments.id)";
     query += " ORDER BY employee.last_name;";
     connection.query(query, function (err, res){
@@ -98,14 +98,67 @@ function viewAll() {
 
 //function to view all employees by department
 function viewByDepartment(){
-    let query = "SELECT departments.department, employee.first_name, employee.last_name";
-    query += " FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN departments ON (role.department_id = departments.id)";
-    query += " ORDER BY departments.department;";
+    let query = "SELECT * FROM departments;"
     connection.query(query, function (err, res){
         if (err) throw err;
         console.table(res);
         promptUser();
     })
+};
+
+function addRole(){
+    let departmentArr = [];    
+    let departmentQuery = "SELECT * FROM departments;";
+    connection.query(departmentQuery, function (err, res){
+        if (err) throw err;
+        for (i = 0; i < res.length; i++){
+            departmentArr.push(res[i].department)
+        }
+        // console.log(departmentArr)    
+    let query = "SELECT role.title, role.salary, departments.department";
+    query += " FROM role INNER JOIN departments ON (role.department_id = departments.id);";
+    connection.query(query, function (err, res){
+        if (err) throw err;
+        console.table(res);                
+        inquirer.prompt([
+            {
+                type: 'input',
+                message: 'What is the name of the role you want to add?',
+                name: "newrole"
+            },
+            {
+                type: 'input',
+                message: 'How much does this role earn per year?',
+                name: "newsalary"
+            },
+            {
+                type: 'list',
+                message: 'What department does this role belong to?',
+                choices: departmentArr,
+                name: "newdepartment"
+            }
+        ]).then(function(response){
+            // console.log(response);
+            // console.log(response.newdepartment);
+            let test = response.newdepartment;            
+            let newId = departmentArr.indexOf(test);
+            newId++;
+            console.log(newId);            
+            console.log("Adding New Role...\n");
+            connection.query("INSERT INTO role SET ?",
+            {
+                title: response.newrole,
+                salary: response.newsalary,
+                department_id: newId
+            },
+            function (err, res){
+                if (err) throw err;
+                console.log(res.affectedRows + " Role Created Succesfully\n");
+                promptUser();
+            });            
+        })      
+    })  
+    })    
 };
 
 //function to add employees to DB and be reflected in all employees
@@ -170,6 +223,32 @@ function addEmployee(){
             promptUser();
         });
     });
+};
+
+function addDepartment() {
+    let query = "SELECT * FROM departments;";
+    connection.query(query, function (err, res){
+        if (err) throw err;
+        console.table(res);    
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'What is the name of the department you want to add?',
+            name: "newdepartment"
+        }
+    ]).then(function(response){
+        console.log("Adding New Department...\n");
+        connection.query("INSERT INTO departments SET ?",
+        {
+            department: response.newdepartment
+        },
+        function (err, res){
+            if (err) throw err;
+            console.log(res.affectedRows + " Department Created Succesfully\n");
+            promptUser();
+        });
+    })
+});
 };
 
 //function to remove employees from DB
