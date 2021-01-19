@@ -26,9 +26,10 @@ The program can then be run using the following command line in the bash termina
 node index.js
 ```
 ### Screenshots
-VIDEO WALKTHROUGH (Coming Soon!)
+[Here](http://bit.ly/35VcRfM) is a video walkthrough of the project.
 
 ![mainpage1](https://github.com/ogmedina/Homework-Employee-Tracker/blob/main/Images/mainpage1.jpg)
+
 ![mainpage2](https://github.com/ogmedina/Homework-Employee-Tracker/blob/main/Images/mainpage2.gif)
 
 ### License
