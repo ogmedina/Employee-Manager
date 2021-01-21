@@ -1,20 +1,15 @@
---Delete database if already it aleady exists
 DROP DATABASE IF EXISTS employee_trackerdb;
 
---Create Database
 CREATE DATABASE employee_trackerdb;
 
---Use this database
 USE employee_trackerdb;
 
---Create table for departments
-CREATE TABLE department (
+CREATE TABLE departments (
     id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR (30) NULL,
+    department VARCHAR (30) NULL,
     PRIMARY KEY (id)    
 );
 
---Create table for roles
 CREATE TABLE role (
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR (30) NULL,
@@ -23,7 +18,6 @@ CREATE TABLE role (
     PRIMARY KEY (id)
 );
 
---Create table foe employees
 CREATE TABLE employee (
     id INT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR (30) NULL,
@@ -33,20 +27,18 @@ CREATE TABLE employee (
     PRIMARY KEY (id)
 );
 
---Seed data for departments
-INSERT INTO department(name)
+INSERT INTO departments(department)
 VALUES ("Sales");
 
-INSERT INTO department(name)
+INSERT INTO departments(department)
 VALUES ("Engineering");
 
-INSERT INTO department(name)
+INSERT INTO departments(department)
 VALUES ("Finance");
 
-INSERT INTO department(name)
+INSERT INTO departments(department)
 VALUES ("Legal");
 
---Seed data for roles, salaries, and corresponding department
 INSERT INTO role (title, salary, department_id)
 VALUES ("Sales Lead", 100000, 1);
 
@@ -68,9 +60,8 @@ VALUES ("Legal Team Lead", 250000, 4);
 INSERT INTO role (title, salary, department_id)
 VALUES ("Lawyer", 190000, 4);
 
---Seed data for intial employees
-INSERT INTO employee (first_name, last_name, role_id)
-VALUES ("John", "Doe", 1);
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES ("John", "Doe", 1, 3);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Mike", "Chan", 2, 1);
