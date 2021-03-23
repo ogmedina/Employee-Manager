@@ -1,10 +1,7 @@
-# Homework-Employee-Tracker
-![GitHub](https://img.shields.io/github/license/ogmedina/Homework-Employee-Tracker)
+# Employee-Manager
+![GitHub](https://img.shields.io/github/license/ogmedina/Employee-Manager)
 
-## Full Stack Boot Camp Homework 12 - Employee Tracker
-
-### Description 
-This is the twelfth assignment for the UTSA Full-Stack Bootcamp. It is a command-line application that allows the user to view and manage departments, roles and employees. It uses node.js, inquirer, and MySQL. 
+This is a command-line application that allows the user to view and manage departments, roles and employees. It uses node.js, inquirer, and MySQL. 
 
 ### Table of Contents
 
@@ -28,9 +25,9 @@ node index.js
 ### Screenshots
 [Here](http://bit.ly/35VcRfM) is a video walkthrough of the project.
 
-![mainpage1](https://github.com/ogmedina/Homework-Employee-Tracker/blob/main/Images/mainpage1.jpg)
+![mainpage1](https://github.com/ogmedina/Employee-Manager/blob/main/Images/mainpage1.jpg)
 
-![mainpage2](https://github.com/ogmedina/Homework-Employee-Tracker/blob/main/Images/mainpage2.gif)
+![mainpage2](https://github.com/ogmedina/Employee-Manager/blob/main/Images/mainpage2.gif)
 
 ### License
 This project is licensed under the MIT License.
@@ -44,6 +41,3 @@ Back End:
 ### Questions
 If you have any questions about the repo, open an issue or contace me directly at ogmdeveloper0@gmail.com. You can
 find more of my work through my [GitHub Account](https://github.com/ogmedina/).
-
-
-
